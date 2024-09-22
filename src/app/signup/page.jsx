@@ -37,8 +37,8 @@ const SignUp = () => {
         localStorage.setItem("userId", data._id);
         localStorage.setItem("userEmail", data.email);
         localStorage.setItem("favouriteMovies", data.favouriteMovies);
-        Cookies.set("access_token", data.token);
-        router.push("/");
+        Cookies.set("access_token", data.token, { expires: 30 });
+        router.push("/home");
       } else {
         throw Error(data.message);
       }
@@ -93,9 +93,9 @@ const SignUp = () => {
           </Link>
         </p>
         <p className="text-gray-400 mt-4">
-          Go to?{" "}
+          Go?{" "}
           <Link href="/" className="text-red-600 hover:underline">
-            Home
+            Back
           </Link>
         </p>
       </div>

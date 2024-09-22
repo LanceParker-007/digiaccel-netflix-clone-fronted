@@ -1,11 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
-import { Cookies } from "js-cookie";
-import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 const Signin = () => {
   const router = useRouter();
@@ -39,20 +40,22 @@ const Signin = () => {
         }
       );
 
+      console.log(data);
+
       if (data.success) {
-        setEmail("");
-        setPassword("");
+        setUser({ email: "", password: "" });
         toast.success("Login successful!");
         localStorage.setItem("userId", data._id);
         localStorage.setItem("userEmail", data.email);
         localStorage.setItem("favouriteMovies", data.favouriteMovies);
-        Cookies.set("access_token", data.token);
-        router.push("/");
+        Cookies.set("access_token", data.token, { expires: 30 });
+        router.push("/home");
       } else {
         throw Error(data.message);
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.log(error);
+      toast.error(error?.response?.data?.message);
     }
   };
 
@@ -114,9 +117,9 @@ const Signin = () => {
           </Link>
         </p>
         <p className="text-gray-400 mt-4">
-          Go to?{" "}
+          Go?{" "}
           <Link href="/" className="text-red-600 hover:underline">
-            Home
+            Back
           </Link>
         </p>
       </div>
