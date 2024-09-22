@@ -5,6 +5,7 @@ import MovieCard from "./components/vnow/MovieCard";
 import { ChevronRight, ChevronDown, ChevronLeft, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
 
 const faqs = [
   {
@@ -35,6 +36,8 @@ export default function Home() {
   const trendingRef = useRef(null);
   const router = useRouter();
 
+  const [email, setEmail] = useState("");
+
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
   };
@@ -49,21 +52,25 @@ export default function Home() {
     // Custom movie api
     const getTrendingMovies = async function () {
       try {
-        const url =
-          "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1";
-        const options = {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNWI4OTVjZWVkM2YzY2E5Mjc4ZDQ3YWIyMWNhZTEwMSIsIm5iZiI6MTcyNjg4NjgwNS4yMTcxNjQsInN1YiI6IjY0NGUxMWUzYTZjMTA0MDRhMjY3NWI2NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8U-xGOywYf6Li-Tu2YTHK8Ekv1-kSufcHplLuAYQjug",
-          },
-        };
+        // const url =
+        //   "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1";
+        // const options = {
+        //   method: "GET",
+        //   headers: {
+        //     accept: "application/json",
+        //     Authorization:
+        //       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNWI4OTVjZWVkM2YzY2E5Mjc4ZDQ3YWIyMWNhZTEwMSIsIm5iZiI6MTcyNjg4NjgwNS4yMTcxNjQsInN1YiI6IjY0NGUxMWUzYTZjMTA0MDRhMjY3NWI2NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8U-xGOywYf6Li-Tu2YTHK8Ekv1-kSufcHplLuAYQjug",
+        //   },
+        // };
 
-        const { data } = await axios.get(url, options);
-        console.log(data);
+        // const { data } = await axios.get(url, options);
 
-        setTrendingMoviesList(data.results);
+        const { data } = await axios.get(
+          "https://api.tvmaze.com/search/shows?q=boys"
+        );
+        // console.log(data.map((ele) => ele.show));
+
+        setTrendingMoviesList(data.map((ele) => ele.show));
       } catch (error) {
         console.log(error);
       }
@@ -103,9 +110,8 @@ export default function Home() {
 
       <div className="max-w-screen-xl mx-auto px-4">
         {/* Hero section  */}
-
         <section
-          className="relative bg-cover bg-center h-screen"
+          className="relative bg-cover bg-center h-screen rounded"
           style={{
             backgroundImage: `url("/images/netflix-home-page-image.jpg")`, // Correct path and quotation mark
           }}
@@ -126,8 +132,16 @@ export default function Home() {
                 type="email"
                 placeholder="Email address"
                 className="w-full sm:w-3/5 bg-black bg-opacity-50 border-2 border-green-500 text-white placeholder-gray-400 py-3 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <button className="w-full sm:w-2/5 bg-red-600 hover:bg-red-700 text-white text-xl py-3 px-6 rounded flex items-center justify-center">
+              <button
+                className="w-full sm:w-2/5 bg-red-600 hover:bg-red-700 text-white text-xl py-3 px-6 rounded flex items-center justify-center"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push(`/signin?email=${encodeURIComponent(email)}`);
+                }}
+              >
                 Get Started <ChevronRight className="ml-2" />
               </button>
             </form>
@@ -140,7 +154,7 @@ export default function Home() {
           <div className="relative">
             <button
               className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 h-24"
-              onClick={() => scroll(-1000)}
+              onClick={() => scroll(-500)}
             >
               <ChevronLeft className="h-8 w-8" />
             </button>
@@ -159,7 +173,7 @@ export default function Home() {
             </div>
             <button
               className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 h-24"
-              onClick={() => scroll(1000)}
+              onClick={() => scroll(500)}
             >
               <ChevronRight className="h-8 w-8" />
             </button>
@@ -293,6 +307,8 @@ export default function Home() {
           </div>
         </footer>
       </div>
+
+      <ToastContainer />
     </div>
   );
 }

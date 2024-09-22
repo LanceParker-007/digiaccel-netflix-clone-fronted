@@ -2,20 +2,49 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import axios from "axios";
+import Cookies from "js-cookie";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
+    if (!email || !password) {
+      toast.error("Email and password are required!");
       return;
     }
-    // Proceed with the sign-up flow (e.g., API call)
+
+    try {
+      const { data } = await axios.post(
+        `http://localhost:5000/api/v1/user/register`,
+        {
+          email,
+          password,
+        }
+      );
+
+      console.log(data);
+
+      if (data.success) {
+        setEmail("");
+        setPassword("");
+        toast.success("Registration successful!");
+        localStorage.setItem("userId", data._id);
+        localStorage.setItem("userEmail", data.email);
+        localStorage.setItem("favouriteMovies", data.favouriteMovies);
+        Cookies.set("access_token", data.token);
+        router.push("/");
+      } else {
+        throw Error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   return (
@@ -23,7 +52,6 @@ const SignUp = () => {
       <div className="bg-gray-800 p-8 rounded-lg shadow-md max-w-sm w-full">
         <h1 className="text-3xl font-bold text-white mb-6">Sign Up</h1>
         <form onSubmit={handleSubmit}>
-          {error && <p className="text-red-600 mb-4">{error}</p>}
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-400 mb-2">
               Email
@@ -50,22 +78,7 @@ const SignUp = () => {
               placeholder="Enter your password"
             />
           </div>
-          <div className="mb-6">
-            <label
-              htmlFor="confirm-password"
-              className="block text-gray-400 mb-2"
-            >
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              id="confirm-password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full p-2 rounded bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-red-600"
-              placeholder="Confirm your password"
-            />
-          </div>
+
           <button
             type="submit"
             className="w-full bg-red-600 text-white p-3 rounded hover:bg-red-700"
@@ -86,6 +99,7 @@ const SignUp = () => {
           </Link>
         </p>
       </div>
+      <Toaster />
     </div>
   );
 };
