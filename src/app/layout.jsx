@@ -7,7 +7,7 @@ import Footer from "./components/footer/Footer";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,7 +28,7 @@ const initialUserState = {
 
 export default function RootLayout({ children }) {
   const [user, setUser] = useState(initialUserState);
-  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     if (Cookies.get("access_token")) {
@@ -40,6 +40,9 @@ export default function RootLayout({ children }) {
         email: lsUserEmail,
         favouriteMovies: lsFavouriteMovies.length > 0 ? lsFavouriteMovies : [],
       });
+      router.push("/home");
+    } else {
+      router.push("/");
     }
   }, []);
 

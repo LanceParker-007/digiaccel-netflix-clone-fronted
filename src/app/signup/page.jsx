@@ -28,15 +28,16 @@ const SignUp = () => {
         }
       );
 
-      console.log(data);
-
       if (data.success) {
         setEmail("");
         setPassword("");
         toast.success("Registration successful!");
         localStorage.setItem("userId", data._id);
         localStorage.setItem("userEmail", data.email);
-        localStorage.setItem("favouriteMovies", data.favouriteMovies);
+        localStorage.setItem(
+          "favouriteMovies",
+          JSON.stringify(data.favouriteMovies)
+        );
         Cookies.set("access_token", data.token, { expires: 30 });
         router.push("/home");
       } else {

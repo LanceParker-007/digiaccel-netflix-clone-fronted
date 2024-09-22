@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
@@ -17,7 +17,7 @@ const Header = ({ user, setUser, initialUserState }) => {
 
   return (
     <header className="max-w-container mx-auto flex items-center justify-between p-4">
-      <Link href={"/"}>
+      <Link href={"/home"}>
         <svg
           viewBox="0 0 111 30"
           className="h-12 w-36 fill-current text-red-600"

@@ -6,11 +6,11 @@ import React, { useEffect, useState } from "react";
 import CardRow from "../components/card-row/CardRow";
 import axios from "axios";
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 const fetchFavouriteMovies = async () => {
   try {
     const options = {
-      method: "GET",
       headers: {
         accept: "application/json",
         Authorization: `Bearer ${Cookies.get("access_token")}`,
@@ -21,9 +21,13 @@ const fetchFavouriteMovies = async () => {
       options
     );
 
-    console.log(data);
+    if (data.success) {
+      return data.favouriteMovies;
+    } else {
+      throw Error(data.message);
+    }
   } catch (error) {
-    return [];
+    toast.error(error?.message);
   }
 };
 

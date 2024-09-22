@@ -2,32 +2,89 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { PlaySquare, Star, StarFill } from "lucide-react"; // Import star icons
+import axios from "axios";
+import Cookies from "js-cookie";
+import { PlaySquare, Star } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
+const options = {
+  headers: {
+    accept: "application/json",
+    Authorization: `Bearer ${Cookies.get("access_token")}`,
+  },
+};
 
 const MovieCard = ({ ranking, movieInfo, showRanking = false }) => {
   // Track whether the movie is marked as favorite
-  const [favorite, setFavorite] = useState(false);
+  const [firstRender, setFirstRender] = useState(true);
+  const [favorite, setFavorite] = useState(
+    JSON.parse(localStorage.getItem("favouriteMovies"))?.some(
+      (movie) => movie.id === movieInfo.id
+    )
+  );
 
-  // useEffect(() => {}, [favorite]);
-  // useEffect(() => {
-  //   const lsFavouriteMovies = localStorage.getItem("favouriteMovies");
-  //   let lsUpdatedFavouriteMovies = [];
-  //   if (favorite) {
-  //     lsUpdatedFavouriteMovies = lsFavouriteMovies.push({
-  //       id: movieInfo?.id,
-  //       name: movieInfo?.name,
-  //       image: movieInfo?.image?.original || "",
-  //     });
-  //   } else {
-  //     lsUpdatedFavouriteMovies = lsFavouriteMovies?.filter(
-  //       (movieData) => movieData.id !== movieInfo.id
-  //     );
-  //   }
-  //   console.log(lsUpdatedFavouriteMovies);
+  const addMovieToFav = async () => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/v1/user/add-to-favourite",
+        {
+          id: movieInfo?.id,
+          name: movieInfo?.name,
+          image: movieInfo?.image?.original || "",
+        },
+        options
+      );
 
-  //   localStorage.setItem("favouriteMovies", lsUpdatedFavouriteMovies);
-  // }, [favorite]);
+      if (data.success) {
+        toast.success("Added to favourites!");
+        localStorage.setItem(
+          "favouriteMovies",
+          JSON.stringify(data.favouriteMovies)
+        );
+      } else {
+        throw Error(data.message);
+      }
+    } catch (error) {
+      toast.error("Failed adding to favourties!");
+    }
+  };
+
+  const removeFromFav = async () => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/v1/user/remove-from-favourite",
+        {
+          id: movieInfo?.id,
+        },
+        options
+      );
+
+      if (data.success) {
+        toast.success("Removed from favourites!");
+        localStorage.setItem(
+          "favouriteMovies",
+          JSON.stringify(data.favouriteMovies)
+        );
+      } else {
+        throw Error(data.message);
+      }
+    } catch (error) {
+      toast.error("Failed removing from favourites!");
+    }
+  };
+
+  useEffect(() => {
+    if (!firstRender) {
+      if (favorite) {
+        addMovieToFav();
+      } else {
+        removeFromFav();
+      }
+    } else {
+      setFirstRender(false);
+    }
+  }, [favorite]);
 
   return (
     <div className="flex-none w-48 relative group overflow-hidden">
@@ -53,16 +110,19 @@ const MovieCard = ({ ranking, movieInfo, showRanking = false }) => {
       </div>
 
       {/* Star Icon for marking as favorite */}
-      <div
-        onClick={(prev) => setFavorite(!prev)}
-        className="absolute top-2 right-2 cursor-pointer"
-      >
-        {favorite ? (
-          <StarFill className="text-yellow-400 w-6 h-6" /> // Filled star for favorite
-        ) : (
-          <Star className="text-yellow-400 w-6 h-6" /> // Empty star for not favorite
-        )}
-      </div>
+      {Cookies.get("access_token") && (
+        <div
+          onClick={() => setFavorite(!favorite)}
+          className="absolute top-2 right-2 cursor-pointer"
+          title="Toggle Favourite"
+        >
+          {favorite ? (
+            <Star fill="yellow" className="text-yellow-400 w-6 h-6" /> // Filled star
+          ) : (
+            <Star className="text-white w-6 h-6" /> // Empty star
+          )}
+        </div>
+      )}
     </div>
   );
 };
