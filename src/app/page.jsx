@@ -6,6 +6,7 @@ import axios from "axios";
 import Faq from "./components/faq/Faq";
 import CardRow from "./components/card-row/CardRow";
 import HeroSection from "./components/hero-section/HeroSection";
+import toast from "react-hot-toast";
 
 const initialUserState = {
   id: "",
@@ -35,6 +36,7 @@ export default function LandingPage() {
 
         setTrendingMoviesList(data.map((ele) => ele.show));
       } catch (error) {
+        toast.error("Failed to fetch trenfing movies!");
         console.log(error);
       }
     };

@@ -99,7 +99,7 @@ const Home = () => {
           <section className="container mx-auto py-16">
             <CardRow
               cardRowTitle="You May Like"
-              cardsList={relatedMovies.slice(0, 5)}
+              cardsList={relatedMovies.slice(0, 2)}
             />
           </section>
         )}

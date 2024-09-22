@@ -54,15 +54,13 @@ const FavouriteMovies = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {favouriteMovies?.length > 0 && (
-        <section className="container mx-auto py-16">
-          <CardRow
-            cardRowTitle="Favourite Movies"
-            cardsList={favouriteMovies}
-            showRanking={true}
-          />
-        </section>
-      )}
+      <section className="container mx-auto py-16">
+        <CardRow
+          cardRowTitle="Favourite Movies"
+          cardsList={favouriteMovies}
+          showRanking={true}
+        />
+      </section>
     </div>
   );
 };

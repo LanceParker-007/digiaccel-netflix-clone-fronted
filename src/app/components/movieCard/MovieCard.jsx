@@ -17,15 +17,7 @@ const options = {
 
 const MovieCard = ({ ranking, movieInfo, showRanking = false }) => {
   // Track whether the movie is marked as favorite
-  const [firstRender, setFirstRender] = useState(true);
-  const [favorite, setFavorite] = useState(
-    console.log(
-      JSON.parse(localStorage.getItem("favouriteMovies"))?.some((movie) => {
-        console.log(movie.id, movieInfo.id);
-        return movie.id === movieInfo.id;
-      })
-    )
-  );
+  const [favorite, setFavorite] = useState(false);
 
   const addMovieToFav = async () => {
     try {
@@ -45,11 +37,12 @@ const MovieCard = ({ ranking, movieInfo, showRanking = false }) => {
           "favouriteMovies",
           JSON.stringify(data.favouriteMovies)
         );
+        setFavorite(true);
       } else {
         throw Error(data.message);
       }
     } catch (error) {
-      toast.error("Failed adding to favourties!");
+      toast.error("Failed adding to favourites!");
     }
   };
 
@@ -69,6 +62,7 @@ const MovieCard = ({ ranking, movieInfo, showRanking = false }) => {
           "favouriteMovies",
           JSON.stringify(data.favouriteMovies)
         );
+        setFavorite(false);
       } else {
         throw Error(data.message);
       }
@@ -77,17 +71,23 @@ const MovieCard = ({ ranking, movieInfo, showRanking = false }) => {
     }
   };
 
-  useEffect(() => {
-    if (!firstRender) {
-      if (favorite) {
-        addMovieToFav();
-      } else {
-        removeFromFav();
-      }
+  const handleFavourite = () => {
+    if (favorite) {
+      removeFromFav();
     } else {
-      setFirstRender(false);
+      addMovieToFav();
     }
-  }, [favorite]);
+  };
+
+  useEffect(() => {
+    const favouriteMovies = JSON.parse(localStorage.getItem("favouriteMovies"));
+
+    if (
+      favouriteMovies?.some((movie) => movie.id === movieInfo.id.toString())
+    ) {
+      setFavorite(true);
+    }
+  }, []);
 
   return (
     <div className="flex-none w-48 relative group overflow-hidden">
@@ -115,7 +115,7 @@ const MovieCard = ({ ranking, movieInfo, showRanking = false }) => {
       {/* Star Icon for marking as favorite */}
       {Cookies.get("access_token") && (
         <div
-          onClick={() => setFavorite(!favorite)}
+          onClick={handleFavourite}
           className="absolute top-2 right-2 cursor-pointer"
           title="Toggle Favourite"
         >
