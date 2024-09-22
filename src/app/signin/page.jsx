@@ -33,7 +33,7 @@ const Signin = () => {
 
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/v1/user/login`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/login`,
         {
           email: user.email,
           password: user.password,

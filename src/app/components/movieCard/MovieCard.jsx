@@ -27,7 +27,7 @@ const MovieCard = ({ ranking, movieInfo, showRanking = false }) => {
   const addMovieToFav = async () => {
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/v1/user/add-to-favourite",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/add-to-favourite`,
         {
           id: movieInfo?.id,
           name: movieInfo?.name,
@@ -53,7 +53,7 @@ const MovieCard = ({ ranking, movieInfo, showRanking = false }) => {
   const removeFromFav = async () => {
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/v1/user/remove-from-favourite",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/remove-from-favourite`,
         {
           id: movieInfo?.id,
         },
