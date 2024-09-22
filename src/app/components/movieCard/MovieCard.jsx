@@ -8,16 +8,16 @@ import { PlaySquare, Star } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const options = {
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${Cookies.get("access_token")}`,
-  },
-};
-
 const MovieCard = ({ ranking, movieInfo, showRanking = false }) => {
   // Track whether the movie is marked as favorite
   const [favorite, setFavorite] = useState(false);
+
+  const options = {
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${Cookies.get("access_token")}`,
+    },
+  };
 
   const addMovieToFav = async () => {
     try {
