@@ -3,9 +3,10 @@
 import Cookies from "js-cookie";
 import { ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CardRow from "../components/card-row/CardRow";
 import axios from "axios";
+import UserContext from "../contexts/UserContext";
 
 const fetchRelatedMovies = async () => {
   try {
@@ -45,12 +46,10 @@ const fetchUpcomingMovies = async () => {
 
 const Home = () => {
   const router = useRouter();
-  // related movies
   const [relatedMovies, setRelatedMovies] = useState([]);
-  // trending movies
   const [trendingMovies, setTrendingMovies] = useState([]);
-  // upcoming movies
   const [upcomingMovies, setUpcomingMovies] = useState([]);
+  const { user, setUser } = useContext(UserContext);
 
   const fillLists = async () => {
     // Await each of the fetch functions
@@ -69,6 +68,18 @@ const Home = () => {
       router.push("/");
       return;
     } else {
+      if (Cookies.get("access_token")) {
+        const lsUserId = localStorage.getItem("userId");
+        const lsUserEmail = localStorage.getItem("userEmail");
+        const lsFavouriteMovies = localStorage.getItem("favouriteMovies");
+        setUser({
+          id: lsUserId,
+          email: lsUserEmail,
+          favouriteMovies: lsFavouriteMovies
+            ? JSON.parse(lsFavouriteMovies)
+            : [],
+        });
+      }
       fillLists();
     }
   }, []);

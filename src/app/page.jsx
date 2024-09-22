@@ -1,22 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 import Faq from "./components/faq/Faq";
 import CardRow from "./components/card-row/CardRow";
 import HeroSection from "./components/hero-section/HeroSection";
 import toast from "react-hot-toast";
 
-const initialUserState = {
-  id: "",
-  email: "",
-  favouriteMovies: [],
-};
-
 export default function LandingPage() {
-  const router = useRouter();
-  const [user, setUser] = useState(initialUserState);
   const [trendingMoviesList, setTrendingMoviesList] = useState([]);
 
   useEffect(() => {
@@ -34,18 +25,6 @@ export default function LandingPage() {
       }
     };
     getTrendingMovies();
-
-    const lsUserId = localStorage.getItem("userId");
-    const lsUserEmail = localStorage.getItem("userEmail");
-    const lsFavouriteMovies = localStorage.getItem("favouriteMovies");
-
-    if (lsUserId && lsUserEmail) {
-      setUser({
-        id: lsUserId,
-        email: lsUserEmail,
-        favouriteMovies: lsFavouriteMovies.length > 0 ? lsFavouriteMovies : [],
-      });
-    }
   }, []);
 
   return (

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import UserContext from "../../contexts/UserContext";
 
-const Header = ({ user, setUser, initialUserState }) => {
+const Header = ({ initialUserState }) => {
   const router = useRouter();
+  const { user, setUser } = useContext(UserContext);
 
   const handleLogout = () => {
     localStorage.removeItem("userId");

@@ -4,10 +4,11 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import UserContext from "./contexts/UserContext"; // Import your UserContext
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,6 +28,7 @@ const initialUserState = {
 };
 
 export default function RootLayout({ children }) {
+  // Initialize user and setUser
   const [user, setUser] = useState(initialUserState);
   const router = useRouter();
 
@@ -38,7 +40,7 @@ export default function RootLayout({ children }) {
       setUser({
         id: lsUserId,
         email: lsUserEmail,
-        favouriteMovies: lsFavouriteMovies.length > 0 ? lsFavouriteMovies : [],
+        favouriteMovies: lsFavouriteMovies ? JSON.parse(lsFavouriteMovies) : [],
       });
       router.push("/home");
     } else {
@@ -53,11 +55,12 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning={true}
       >
         <div className="min-h-screen bg-black text-white max-w-screen-xl mx-auto">
-          <Header user={user} setUser={setUser} />
-
-          {children}
-
-          <Footer />
+          {/* Provide user and setUser to the context */}
+          <UserContext.Provider value={{ user, setUser }}>
+            <Header />
+            {children} {/* children will now have access to the context */}
+            <Footer />
+          </UserContext.Provider>
         </div>
         <Toaster />
       </body>
