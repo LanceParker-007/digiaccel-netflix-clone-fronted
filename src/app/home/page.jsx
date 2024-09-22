@@ -99,12 +99,12 @@ const Home = () => {
           <section className="container mx-auto py-16">
             <CardRow
               cardRowTitle="You may also like"
-              cardsList={relatedMovies.slice(0, 2)}
+              cardsList={relatedMovies}
             />
           </section>
         )}
 
-        {/* {trendingMovies?.length > 0 && (
+        {trendingMovies?.length > 0 && (
           <section className="container mx-auto py-16">
             <CardRow
               cardRowTitle="Trending Now"
@@ -121,7 +121,7 @@ const Home = () => {
               cardsList={upcomingMovies}
             />
           </section>
-        )} */}
+        )}
       </div>
     </>
   );

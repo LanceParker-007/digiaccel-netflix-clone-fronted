@@ -19,13 +19,6 @@ export default function LandingPage() {
   const [user, setUser] = useState(initialUserState);
   const [trendingMoviesList, setTrendingMoviesList] = useState([]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("favouriteMovies");
-    setUser(initialUserState);
-  };
-
   useEffect(() => {
     // Custom movie api
     const getTrendingMovies = async function () {
@@ -36,7 +29,7 @@ export default function LandingPage() {
 
         setTrendingMoviesList(data.map((ele) => ele.show));
       } catch (error) {
-        toast.error("Failed to fetch trenfing movies!");
+        toast.error("Failed to fetch trending movies!");
         console.log(error);
       }
     };

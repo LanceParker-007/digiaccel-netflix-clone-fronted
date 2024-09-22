@@ -26,7 +26,7 @@ const MovieCard = ({ ranking, movieInfo, showRanking = false }) => {
         {
           id: movieInfo?.id,
           name: movieInfo?.name,
-          image: movieInfo?.image?.original || "",
+          image: movieInfo?.image?.original || movieInfo?.image,
         },
         options
       );
