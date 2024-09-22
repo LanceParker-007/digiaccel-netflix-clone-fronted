@@ -97,11 +97,14 @@ const Home = () => {
       <div className="min-h-screen bg-black text-white">
         {relatedMovies?.length > 0 && (
           <section className="container mx-auto py-16">
-            <CardRow cardRowTitle="You May Like" cardsList={relatedMovies} />
+            <CardRow
+              cardRowTitle="You May Like"
+              cardsList={relatedMovies.slice(0, 5)}
+            />
           </section>
         )}
 
-        {trendingMovies?.length > 0 && (
+        {/* {trendingMovies?.length > 0 && (
           <section className="container mx-auto py-16">
             <CardRow
               cardRowTitle="Trending Now"
@@ -118,7 +121,7 @@ const Home = () => {
               cardsList={upcomingMovies}
             />
           </section>
-        )}
+        )} */}
       </div>
     </>
   );

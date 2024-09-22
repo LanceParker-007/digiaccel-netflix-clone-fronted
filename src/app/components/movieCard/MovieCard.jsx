@@ -19,8 +19,11 @@ const MovieCard = ({ ranking, movieInfo, showRanking = false }) => {
   // Track whether the movie is marked as favorite
   const [firstRender, setFirstRender] = useState(true);
   const [favorite, setFavorite] = useState(
-    JSON.parse(localStorage.getItem("favouriteMovies"))?.some(
-      (movie) => movie.id === movieInfo.id
+    console.log(
+      JSON.parse(localStorage.getItem("favouriteMovies"))?.some((movie) => {
+        console.log(movie.id, movieInfo.id);
+        return movie.id === movieInfo.id;
+      })
     )
   );
 

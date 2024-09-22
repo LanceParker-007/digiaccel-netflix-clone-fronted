@@ -2,11 +2,14 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+
+// Fallback component for Suspense
+const Fallback = () => <div>Loading...</div>;
 
 const Signin = () => {
   const router = useRouter();
@@ -26,7 +29,7 @@ const Signin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
+    if (!user.email || !user.password) {
       toast.error("Email and password are required!");
       return;
     }
@@ -64,12 +67,12 @@ const Signin = () => {
     const emailFromQuery = params.get("email");
 
     if (emailFromQuery) {
-      setUser({
-        ...user,
-        email: JSON.parse(JSON.stringify(emailFromQuery)),
-      });
+      setUser((prevUser) => ({
+        ...prevUser,
+        email: emailFromQuery,
+      }));
     }
-  }, []);
+  }, [params]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black">
@@ -128,4 +131,10 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+const SigninWrapper = () => (
+  <Suspense fallback={<Fallback />}>
+    <Signin />
+  </Suspense>
+);
+
+export default SigninWrapper;
