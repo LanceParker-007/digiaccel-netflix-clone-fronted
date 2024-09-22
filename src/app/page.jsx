@@ -106,65 +106,6 @@ export default function LandingPage() {
       <section className="container mx-auto py-16">
         <Faq />
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-gray-800 py-8">
-        <div className="container mx-auto text-gray-500">
-          <p className="mb-4">Questions? Call 000-800-040-1843</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            <a href="#" className="hover:underline">
-              FAQ
-            </a>
-            <a href="#" className="hover:underline">
-              Help Centre
-            </a>
-            <a href="#" className="hover:underline">
-              Account
-            </a>
-            <a href="#" className="hover:underline">
-              Media Centre
-            </a>
-            <a href="#" className="hover:underline">
-              Investor Relations
-            </a>
-            <a href="#" className="hover:underline">
-              Jobs
-            </a>
-            <a href="#" className="hover:underline">
-              Ways to Watch
-            </a>
-            <a href="#" className="hover:underline">
-              Terms of Use
-            </a>
-            <a href="#" className="hover:underline">
-              Privacy
-            </a>
-            <a href="#" className="hover:underline">
-              Cookie Preferences
-            </a>
-            <a href="#" className="hover:underline">
-              Corporate Information
-            </a>
-            <a href="#" className="hover:underline">
-              Contact Us
-            </a>
-            <a href="#" className="hover:underline">
-              Speed Test
-            </a>
-            <a href="#" className="hover:underline">
-              Legal Notices
-            </a>
-            <a href="#" className="hover:underline">
-              Only on Netflix
-            </a>
-          </div>
-          <select className="bg-transparent border rounded px-2 py-1 mt-8">
-            <option>English</option>
-            <option>हिन्दी</option>
-          </select>
-          <p className="mt-4">Netflix India</p>
-        </div>
-      </footer>
     </div>
   );
 }
