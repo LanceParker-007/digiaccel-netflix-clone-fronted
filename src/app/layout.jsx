@@ -57,7 +57,7 @@ export default function RootLayout({ children }) {
         <div className="min-h-screen bg-black text-white max-w-screen-xl mx-auto">
           {/* Provide user and setUser to the context */}
           <UserContext.Provider value={{ user, setUser }}>
-            <Header />
+            <Header initialUserState={initialUserState} />
             {children} {/* children will now have access to the context */}
             <Footer />
           </UserContext.Provider>

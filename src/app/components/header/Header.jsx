@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import UserContext from "../../contexts/userContext";
 
-const Header = ({ uinitialUserState }) => {
+const Header = ({ initialUserState }) => {
   const router = useRouter();
   const { user, setUser } = useContext(UserContext);
 
