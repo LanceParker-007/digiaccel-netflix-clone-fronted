@@ -98,7 +98,7 @@ const Home = () => {
         {relatedMovies?.length > 0 && (
           <section className="container mx-auto py-16">
             <CardRow
-              cardRowTitle="You May Like"
+              cardRowTitle="You may also like"
               cardsList={relatedMovies.slice(0, 2)}
             />
           </section>
