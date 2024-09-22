@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import CardRow from "../components/card-row/CardRow";
 import axios from "axios";
-import UserContext from "../contexts/UserContext";
+import UserContext from "../contexts/userContext";
 
 const fetchRelatedMovies = async () => {
   try {

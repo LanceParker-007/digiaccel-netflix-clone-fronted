@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import UserContext from "./contexts/UserContext"; // Import your UserContext
+import UserContext from "./contexts/userContext"; // Import your UserContext
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

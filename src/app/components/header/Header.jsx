@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import UserContext from "../../contexts/UserContext";
+import UserContext from "../../contexts/userContext";
 
-const Header = ({ initialUserState }) => {
+const Header = ({ uinitialUserState }) => {
   const router = useRouter();
   const { user, setUser } = useContext(UserContext);
 
